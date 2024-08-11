@@ -25,7 +25,7 @@ import (
 	"time"
 )
 
-func TestClientNode(t *testing.T) {
+func TestPsNode(t *testing.T) {
 	Registry := &types.SafeComponentSlice{}
 	Registry.Add(&PsNode{})
 	var targetNodeType = "ci/ps"
