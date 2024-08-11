@@ -11,6 +11,7 @@ import (
 	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
 	"github.com/rulego/rulego"
 	"github.com/rulego/rulego/api/types"
+	"github.com/rulego/rulego/components/base"
 	"github.com/rulego/rulego/utils/maps"
 	"github.com/rulego/rulego/utils/str"
 	"net/http"
@@ -69,6 +70,7 @@ type GitCloneNodeConfiguration struct {
 type GitCloneNode struct {
 	// 节点配置
 	Config GitCloneNodeConfiguration
+	hasVar bool
 }
 
 // Type 组件类型
@@ -86,15 +88,23 @@ func (x *GitCloneNode) New() types.Node {
 
 // Init 初始化
 func (x *GitCloneNode) Init(ruleConfig types.Config, configuration types.Configuration) error {
-	return maps.Map2Struct(configuration, &x.Config)
+	err := maps.Map2Struct(configuration, &x.Config)
+	if str.CheckHasVar(x.Config.Repository) || str.CheckHasVar(x.Config.Directory) || str.CheckHasVar(x.Config.Reference) {
+		x.hasVar = true
+	}
+	return err
 }
 
 // OnMsg 处理消息
 func (x *GitCloneNode) OnMsg(ctx types.RuleContext, msg types.RuleMsg) {
-	ref := x.getReferenceName(msg)
-	workDir := x.getWorkDir(msg)
+	var evn map[string]interface{}
+	if x.hasVar {
+		evn = base.NodeUtils.GetEvnAndMetadata(ctx, msg)
+	}
+	ref := x.getReferenceName(msg, evn)
+	workDir := x.getWorkDir(msg, evn)
 	msg.Metadata.PutValue(KeyWorkDir, workDir)
-	repository := x.getRepository(msg)
+	repository := x.getRepository(msg, evn)
 	// 检查目录是否存在
 	if _, err := os.Stat(workDir); os.IsNotExist(err) {
 		// 设置克隆选项
@@ -138,6 +148,7 @@ func (x *GitCloneNode) OnMsg(ctx types.RuleContext, msg types.RuleMsg) {
 		pullOptions := &git.PullOptions{
 			//RemoteName: "origin",
 			RemoteURL: repository,
+			Force:     true,
 		}
 		if proxy := x.getProxy(); proxy.URL != "" {
 			pullOptions.ProxyOptions = proxy
@@ -195,28 +206,28 @@ func (x *GitCloneNode) getAuthMethod() (transport.AuthMethod, error) {
 	}
 	return nil, errors.New("not authType=" + x.Config.AuthType)
 }
-func (x *GitCloneNode) getWorkDir(msg types.RuleMsg) string {
+func (x *GitCloneNode) getWorkDir(msg types.RuleMsg, evn map[string]interface{}) string {
 	workDir := x.Config.Directory
 	if workDir == "" {
 		workDir = msg.Metadata.GetValue(KeyWorkDir)
-	} else {
-		workDir = str.SprintfDict(workDir, msg.Metadata.Values())
+	} else if evn != nil {
+		workDir = str.ExecuteTemplate(workDir, evn)
 	}
-	workDir = path.Join(workDir, x.getRepoName(x.getRepository(msg)))
+	workDir = path.Join(workDir, x.getRepoName(x.getRepository(msg, evn)))
 	return workDir
 }
 
-func (x *GitCloneNode) getReferenceName(msg types.RuleMsg) string {
+func (x *GitCloneNode) getReferenceName(msg types.RuleMsg, evn map[string]interface{}) string {
 	ref := x.Config.Reference
 	if ref == "" {
 		ref = msg.Metadata.GetValue(KeyRef)
-	} else {
-		ref = str.SprintfDict(ref, msg.Metadata.Values())
+	} else if evn != nil {
+		ref = str.ExecuteTemplate(ref, evn)
 	}
 	return ref
 }
 
-func (x *GitCloneNode) getRepository(msg types.RuleMsg) string {
+func (x *GitCloneNode) getRepository(msg types.RuleMsg, evn map[string]interface{}) string {
 	repository := x.Config.Repository
 	if repository == "" {
 		if x.Config.AuthType == "ssh-key" {
@@ -224,8 +235,8 @@ func (x *GitCloneNode) getRepository(msg types.RuleMsg) string {
 		} else {
 			repository = msg.Metadata.GetValue(KeyGitHttpUrl)
 		}
-	} else {
-		repository = str.SprintfDict(repository, msg.Metadata.Values())
+	} else if evn != nil {
+		repository = str.ExecuteTemplate(repository, evn)
 	}
 	return repository
 }

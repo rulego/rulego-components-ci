@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/go-git/go-git/v5 v5.11.0
-	github.com/rulego/rulego v0.22.1-0.20240729093613-233652e7cd8c
+	github.com/rulego/rulego v0.23.0-alpha.1.0.20240809084515-eeef2ae803d8
 	github.com/shirou/gopsutil/v4 v4.24.7
 )
 
