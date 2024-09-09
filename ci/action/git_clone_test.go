@@ -38,7 +38,7 @@ func TestGitCloneNode(t *testing.T) {
 			"repository": "",
 			"directory":  "",
 			"reference":  "",
-			"authType":   "ssh-key",
+			"authType":   "ssh",
 		}, Registry)
 		metaData := types.BuildMetadata(make(map[string]string))
 		metaData.PutValue(KeyWorkDir, "d://")
