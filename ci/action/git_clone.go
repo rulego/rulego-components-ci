@@ -78,9 +78,11 @@ func (x *GitCloneNode) Type() string {
 
 func (x *GitCloneNode) New() types.Node {
 	return &GitCloneNode{Config: GitCloneNodeConfiguration{
-		Repository: "",
-		Directory:  "",
-		Reference:  "refs/heads/main",
+		Repository:   "",
+		Directory:    "",
+		AuthType:     "token",
+		AuthPassword: "${vars.token}",
+		Reference:    "refs/heads/main",
 	}}
 }
 

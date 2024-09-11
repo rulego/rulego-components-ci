@@ -67,7 +67,11 @@ func (x *GitPushNode) Type() string {
 }
 
 func (x *GitPushNode) New() types.Node {
-	return &GitPushNode{Config: GitPushNodeConfiguration{}}
+	return &GitPushNode{Config: GitPushNodeConfiguration{
+		RefSpecs:     "refs/heads/main:refs/heads/main",
+		AuthType:     "token",
+		AuthPassword: "${vars.token}",
+	}}
 }
 
 // Init 初始化

@@ -27,9 +27,11 @@ import (
 	"github.com/rulego/rulego/api/types"
 	"github.com/rulego/rulego/utils/str"
 	"net/http"
-	"path"
 	"strings"
 )
+
+// KeyHash commit hash
+const KeyHash = "hash"
 
 func init() {
 	//不验证https
@@ -39,6 +41,13 @@ func init() {
 		},
 	})
 	client.InstallProtocol("https", c)
+}
+
+type Signature struct {
+	//作者名称
+	AuthorName string `json:"authorName"`
+	//作者邮箱
+	AuthorEmail string `json:"authorEmail"`
 }
 
 type baseGitNodeConfiguration struct {
@@ -71,6 +80,9 @@ type baseGitNode struct {
 }
 
 func (x *baseGitNode) getAuthMethod() (transport.AuthMethod, error) {
+	if x.Config.AuthType == "" {
+		return nil, nil
+	}
 	// 根据 AuthType 字段的值选择认证方式
 	switch x.Config.AuthType {
 	case "ssh-key", "ssh":
@@ -105,7 +117,7 @@ func (x *baseGitNode) getWorkDir(msg types.RuleMsg, evn map[string]interface{}) 
 	} else if evn != nil {
 		workDir = str.ExecuteTemplate(workDir, evn)
 	}
-	workDir = path.Join(workDir, x.getRepoName(x.getRepository(msg, evn)))
+	//workDir = path.Join(workDir, x.getRepoName(x.getRepository(msg, evn)))
 	return workDir
 }
 
