@@ -169,7 +169,7 @@ func (x *PsNode) OnMsg(ctx types.RuleContext, msg types.RuleMsg) {
 
 	// 将 result 转换为 JSON 字符串并放入 msg.Data
 	resultJSON, _ := json.Marshal(result)
-	msg.Data = string(resultJSON)
+	msg.SetData(string(resultJSON))
 
 	ctx.TellSuccess(msg)
 }

@@ -164,7 +164,7 @@ func (x *GitLogNode) OnMsg(ctx types.RuleContext, msg types.RuleMsg) {
 
 	// 将日志添加到消息中
 	msg.DataType = types.JSON
-	msg.Data = str.ToString(messages)
+	msg.SetData(str.ToString(messages))
 	ctx.TellSuccess(msg)
 }
 

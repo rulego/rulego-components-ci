@@ -66,7 +66,7 @@ func TestPsNode(t *testing.T) {
 				MsgList: msgList,
 				Callback: func(msg types.RuleMsg, relationType string, err error) {
 					result := make(map[string]interface{})
-					_ = json.Unmarshal([]byte(msg.Data), &result)
+					_ = json.Unmarshal([]byte(msg.GetData()), &result)
 					_, ok := result[OptionsHostInfo]
 					assert.True(t, ok)
 					assert.Equal(t, types.Success, relationType)
@@ -77,7 +77,7 @@ func TestPsNode(t *testing.T) {
 				MsgList: msgList,
 				Callback: func(msg types.RuleMsg, relationType string, err error) {
 					result := make(map[string]interface{})
-					_ = json.Unmarshal([]byte(msg.Data), &result)
+					_ = json.Unmarshal([]byte(msg.GetData()), &result)
 					_, ok := result[OptionsHostInfo]
 					assert.True(t, ok)
 					_, ok = result[OptionsCpuInfo]

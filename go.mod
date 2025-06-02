@@ -6,7 +6,7 @@ toolchain go1.23.4
 
 require (
 	github.com/go-git/go-git/v5 v5.15.0
-	github.com/rulego/rulego v0.31.0
+	github.com/rulego/rulego v0.31.2-0.20250602155557-dd600e38f329
 	github.com/shirou/gopsutil/v4 v4.25.5-0.20250517063057-34ac457e154c
 )
 
