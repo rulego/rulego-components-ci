@@ -6,7 +6,7 @@ toolchain go1.23.4
 
 require (
 	github.com/go-git/go-git/v5 v5.15.0
-	github.com/rulego/rulego v0.31.2-0.20250602155557-dd600e38f329
+	github.com/rulego/rulego v0.35.3-0.20260527090622-d8b29d722bac
 	github.com/shirou/gopsutil/v4 v4.25.5-0.20250517063057-34ac457e154c
 )
 
@@ -22,7 +22,7 @@ require (
 	github.com/ebitengine/purego v0.8.3 // indirect
 	github.com/eclipse/paho.mqtt.golang v1.4.3 // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect
-	github.com/expr-lang/expr v1.17.2 // indirect
+	github.com/expr-lang/expr v1.17.6 // indirect
 	github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376 // indirect
 	github.com/go-git/go-billy/v5 v5.6.2 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
