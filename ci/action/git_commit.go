@@ -35,13 +35,13 @@ func init() {
 // GitCommitNodeConfiguration 节点配置
 type GitCommitNodeConfiguration struct {
 	// 本地目录
-	Directory string
+	Directory string `json:"directory" label:"Directory" desc:"Local git repository directory"`
 	// 添加的文件模式匹配
-	Pattern string
+	Pattern string `json:"pattern" label:"Pattern" desc:"File pattern to add, e.g. * or *.go"`
 	// 注释消息
-	Message string
+	Message string `json:"message" label:"Message" desc:"Commit message"`
 	//签名
-	Signature Signature
+	Signature Signature `json:"signature" label:"Signature" desc:"Commit signature"`
 }
 
 // GitCommitNode 实现 Git 推送
@@ -124,6 +124,11 @@ func (x *GitCommitNode) OnMsg(ctx types.RuleContext, msg types.RuleMsg) {
 
 // Destroy 销毁
 func (x *GitCommitNode) Destroy() {
+}
+
+// Desc returns the component description
+func (x *GitCommitNode) Desc() string {
+	return "Git commit changes with message. Routes to Success/Failure"
 }
 
 func (x *GitCommitNode) getPattern(_ types.RuleMsg, evn map[string]interface{}) string {

@@ -34,13 +34,13 @@ func init() {
 // GitCreateTagNodeConfiguration 节点配置
 type GitCreateTagNodeConfiguration struct {
 	// 本地目录
-	Directory string
+	Directory string `json:"directory" label:"Directory" desc:"Local git repository directory"`
 	// 标签名称
-	Tag string
+	Tag string `json:"tag" label:"Tag" desc:"Tag name to create"`
 	// 注释消息
-	Message string
+	Message string `json:"message" label:"Message" desc:"Tag message"`
 	//签名
-	Signature Signature
+	Signature Signature `json:"signature" label:"Signature" desc:"Tag signature"`
 }
 
 // GitCreateTagNode 实现 Git 推送
@@ -117,6 +117,11 @@ func (x *GitCreateTagNode) OnMsg(ctx types.RuleContext, msg types.RuleMsg) {
 
 // Destroy 销毁
 func (x *GitCreateTagNode) Destroy() {
+}
+
+// Desc returns the component description
+func (x *GitCreateTagNode) Desc() string {
+	return "Git create tag at specified commit. Routes to Success/Failure"
 }
 
 func (x *GitCreateTagNode) getTag(_ types.RuleMsg, evn map[string]interface{}) string {

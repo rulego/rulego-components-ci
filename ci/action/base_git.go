@@ -45,34 +45,34 @@ func init() {
 
 type Signature struct {
 	//作者名称
-	AuthorName string `json:"authorName"`
+	AuthorName string `json:"authorName" label:"Author Name" desc:"Commit author name"`
 	//作者邮箱
-	AuthorEmail string `json:"authorEmail"`
+	AuthorEmail string `json:"authorEmail" label:"Author Email" desc:"Commit author email"`
 }
 
 type baseGitNodeConfiguration struct {
 	// Git 仓库 URL
-	Repository string
+	Repository string `json:"repository" label:"Repository" desc:"Git repository URL"`
 	// 克隆到的本地目录
-	Directory string
+	Directory string `json:"directory" label:"Directory" desc:"Local directory path"`
 	// 分支或标签的完整引用名
-	Reference string
+	Reference string `json:"reference" label:"Reference" desc:"Branch or tag reference, e.g. refs/heads/main"`
 	// 认证类型，可以是 "ssh", "password", 或 "token"
-	AuthType string
+	AuthType string `json:"authType" label:"Auth Type" desc:"Authentication type: ssh, password, token"`
 	// 用户名
-	AuthUser string
+	AuthUser string `json:"authUser" label:"Auth User" desc:"Authentication username"`
 	// 密码或 token
-	AuthPassword string
+	AuthPassword string `json:"authPassword" label:"Auth Password" desc:"Authentication password or token"`
 	// SSH 秘钥文件路径
-	AuthPemFile string
+	AuthPemFile string `json:"authPemFile" label:"Auth PEM File" desc:"SSH private key file path"`
 	// 代理地址
-	ProxyUrl string
+	ProxyUrl string `json:"proxyUrl" label:"Proxy URL" desc:"Proxy server URL"`
 	// 代理用户名
-	ProxyUsername string
+	ProxyUsername string `json:"proxyUsername" label:"Proxy Username" desc:"Proxy authentication username"`
 	// 代理密码
-	ProxyPassword string
+	ProxyPassword string `json:"proxyPassword" label:"Proxy Password" desc:"Proxy authentication password"`
 	//RefSpecs 用于定义本地分支与远程分支之间的映射关系，多个映射关系与逗号隔开，例如：refs/heads/your-branch:refs/heads/your-branch
-	RefSpecs string
+	RefSpecs string `json:"refSpecs" label:"Ref Specs" desc:"Ref specs for push, comma-separated, e.g. refs/heads/main:refs/heads/main"`
 }
 
 type baseGitNode struct {

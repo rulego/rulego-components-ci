@@ -69,7 +69,7 @@ type PsNodeConfiguration struct {
 	//  - net/ioCounters: 查询网络IO计数器信息
 	//  - net/interfaces: 查询网络接口信息
 	// 如果为空，则查询所有指标
-	Options []string
+	Options []string `json:"options" label:"Options" desc:"Metrics to query: host/info, cpu/info, cpu/percent, mem/virtualMemory, mem/swapMemory, disk/usage, disk/ioCounters, net/ioCounters, net/interfaces"`
 }
 
 // PsNode 查询主机信息，如：主机信息、CPU信息、内存信息、磁盘信息、网络信息等
@@ -185,4 +185,9 @@ func (x *PsNode) contains(target string) bool {
 
 // Destroy 销毁
 func (x *PsNode) Destroy() {
+}
+
+// Desc returns the component description
+func (x *PsNode) Desc() string {
+	return "Execute shell command and capture output. Routes to Success/Failure"
 }

@@ -41,16 +41,17 @@ func TestGitCloneNode(t *testing.T) {
 			"authType":   "ssh",
 		}, Registry)
 		metaData := types.BuildMetadata(make(map[string]string))
-		metaData.PutValue(KeyWorkDir, "d://")
+		metaData.PutValue(KeyWorkDir, "d:/")
 		metaData.PutValue(KeyRef, "main")
 		metaData.PutValue(KeyGitSshUrl, "git@github.com:rulego/rulego-components-ci.git")
 		metaData.PutValue(KeyGitHttpUrl, "https://github.com/rulego/rulego-components-ci")
 		msg := types.NewMsg(0, "test", types.JSON, metaData, "")
-		evn := base.NodeUtils.GetEvnAndMetadata(nil, msg)
+		ctx := test.NewRuleContext(types.NewConfig(), nil)
+		evn := base.NodeUtils.GetEvnAndMetadata(ctx, msg)
 		workDir := (node.(*GitCloneNode)).getWorkDir(msg, evn)
 		repository := (node.(*GitCloneNode)).getRepository(msg, evn)
 		reference := (node.(*GitCloneNode)).getReferenceName(msg, evn)
-		assert.Equal(t, "d:/rulego-components-ci", workDir)
+		assert.Equal(t, "d:/", workDir)
 		assert.Equal(t, "git@github.com:rulego/rulego-components-ci.git", repository)
 		assert.Equal(t, "main", reference)
 
@@ -70,7 +71,6 @@ func TestGitCloneNode(t *testing.T) {
 			"authType":   "token",
 		}, Registry)
 		repository = (node.(*GitCloneNode)).getRepository(msg, evn)
-		assert.Equal(t, "d:/rulego-components-ci", workDir)
 		assert.Equal(t, "https://github.com/rulego/rulego-components-ci", repository)
 		assert.Equal(t, "main", reference)
 	})

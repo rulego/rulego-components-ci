@@ -36,13 +36,13 @@ func init() {
 // GitLogNodeConfiguration 节点配置
 type GitLogNodeConfiguration struct {
 	// 本地目录
-	Directory string `json:"directory"`
+	Directory string `json:"directory" label:"Directory" desc:"Local git repository directory"`
 	// 日志数量限制
-	Limit int `json:"limit"`
+	Limit int `json:"limit" label:"Limit" desc:"Max number of log entries, 0 means no limit"`
 	// 起始时间，格式：yyyy-MM-dd 或者 yyyy-MM-dd HH:mm:ss 如 "2006-01-02 15:04:05"
-	StartTime string `json:"startTime"`
+	StartTime string `json:"startTime" label:"Start Time" desc:"Start time filter, format: yyyy-MM-dd or yyyy-MM-dd HH:mm:ss"`
 	// 结束时间，格式：yyyy-MM-dd 或者 yyyy-MM-dd HH:mm:ss 如 "2006-01-02 15:04:05"
-	EndTime string `json:"endTime"`
+	EndTime string `json:"endTime" label:"End Time" desc:"End time filter, format: yyyy-MM-dd or yyyy-MM-dd HH:mm:ss"`
 }
 
 // GitLogNode 实现获取 Git 日志
@@ -170,6 +170,11 @@ func (x *GitLogNode) OnMsg(ctx types.RuleContext, msg types.RuleMsg) {
 
 // Destroy 销毁
 func (x *GitLogNode) Destroy() {
+}
+
+// Desc returns the component description
+func (x *GitLogNode) Desc() string {
+	return "Git log to retrieve commit history. Routes to Success/Failure"
 }
 
 type LogMsg struct {

@@ -32,25 +32,25 @@ func init() {
 // GitPushNodeConfiguration 节点配置
 type GitPushNodeConfiguration struct {
 	// Git 仓库 URL
-	Repository string
+	Repository string `json:"repository" label:"Repository" desc:"Git repository URL"`
 	// 推送到的本地目录
-	Directory string
+	Directory string `json:"directory" label:"Directory" desc:"Local git repository directory"`
 	//RefSpecs 用于定义本地分支与远程分支之间的映射关系，例如：refs/heads/your-branch:refs/heads/your-branch，多个映射关系与逗号隔开
-	RefSpecs string
+	RefSpecs string `json:"refSpecs" label:"Ref Specs" desc:"Ref specs for push, comma-separated, e.g. refs/heads/main:refs/heads/main"`
 	// 认证类型，可以是 "ssh", "password", 或 "token"
-	AuthType string
+	AuthType string `json:"authType" label:"Auth Type" desc:"Authentication type: ssh, password, token"`
 	// 用户名
-	AuthUser string
+	AuthUser string `json:"authUser" label:"Auth User" desc:"Authentication username"`
 	// 密码或 token
-	AuthPassword string
+	AuthPassword string `json:"authPassword" label:"Auth Password" desc:"Authentication password or token"`
 	// SSH 秘钥文件路径
-	AuthPemFile string
+	AuthPemFile string `json:"authPemFile" label:"Auth PEM File" desc:"SSH private key file path"`
 	// 代理地址
-	ProxyUrl string
+	ProxyUrl string `json:"proxyUrl" label:"Proxy URL" desc:"Proxy server URL"`
 	// 代理用户名
-	ProxyUsername string
+	ProxyUsername string `json:"proxyUsername" label:"Proxy Username" desc:"Proxy authentication username"`
 	// 代理密码
-	ProxyPassword string
+	ProxyPassword string `json:"proxyPassword" label:"Proxy Password" desc:"Proxy authentication password"`
 }
 
 // GitPushNode 实现 Git 推送
@@ -121,4 +121,9 @@ func (x *GitPushNode) OnMsg(ctx types.RuleContext, msg types.RuleMsg) {
 
 // Destroy 销毁
 func (x *GitPushNode) Destroy() {
+}
+
+// Desc returns the component description
+func (x *GitPushNode) Desc() string {
+	return "Git push to remote repository. Routes to Success/Failure"
 }
